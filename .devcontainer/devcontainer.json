@@ -54,7 +54,20 @@
 				"GitHub.copilot-chat",
 				"ms-vscode.vscode-copilot-vision",
 				"ms-azuretools.vscode-azure-mcp-server"
-			]
+			],
+			"mcp": {
+				"servers": {
+					"cds-mcp": {
+						"command": "npx",
+						"args": [
+							"-y",
+							"@cap-js/mcp-server"
+						],
+						"env": {},
+						"type": "stdio"
+					}
+				}
+			}
 		}
 	},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
