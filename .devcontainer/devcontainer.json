@@ -53,7 +53,8 @@
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
 				"ms-vscode.vscode-copilot-vision",
-				"ms-azuretools.vscode-azure-mcp-server"
+				"ms-azuretools.vscode-azure-mcp-server",
+				"ms-ossdata.vscode-pgsql"
 			],
 			"mcp": {
 				"servers": {
@@ -65,6 +66,12 @@
 						],
 						"env": {},
 						"type": "stdio"
+					},
+					"github/github-mcp-server": {
+						"type": "http",
+						"url": "https://api.githubcopilot.com/mcp/",
+						"gallery": "https://api.mcp.github.com/2025-09-15/v0/servers/ab12cd34-5678-90ef-1234-567890abcdef",
+						"version": "0.13.0"
 					}
 				}
 			}
