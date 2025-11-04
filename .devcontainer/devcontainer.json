@@ -54,7 +54,8 @@
 				"GitHub.copilot-chat",
 				"ms-vscode.vscode-copilot-vision",
 				"ms-azuretools.vscode-azure-mcp-server",
-				"ms-ossdata.vscode-pgsql"
+				"ms-ossdata.vscode-pgsql",
+				"github.vscode-github-actions"
 			],
 			"mcp": {
 				"servers": {

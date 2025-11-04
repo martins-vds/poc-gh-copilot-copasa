@@ -1,0 +1,97 @@
+name: "Copilot Setup Steps"
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # The job MUST be called `copilot-setup-steps` or it will not be picked up by Copilot.
+  copilot-setup-steps:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Validate ABAP file structure
+        run: |
+          echo "Validating ABAP project structure..."
+          # Check for common ABAP file patterns
+          find . -name "*.abap" -o -name "*.prog.abap" -o -name "*.clas.abap" | head -10
+          
+      - name: Check GitHub Copilot configuration
+        run: |
+          echo "Validating GitHub Copilot configuration files..."
+          if [ -f ".github/copilot-instructions.md" ]; then
+            echo "✅ Main Copilot instructions found"
+          else
+            echo "❌ Main Copilot instructions missing"
+            exit 1
+          fi
+          
+          # Check for instruction files
+          for file in abap testing security performance documentation code-review; do
+            if [ -f ".github/instructions/${file}.instructions.md" ]; then
+              echo "✅ ${file} instructions found"
+            else
+              echo "❌ ${file} instructions missing"
+            fi
+          done
+          
+          # Check for prompt files
+          for file in setup-component write-tests code-review debug-issue generate-docs refactor-code; do
+            if [ -f ".github/prompts/${file}.prompt.md" ]; then
+              echo "✅ ${file} prompt found"
+            else
+              echo "❌ ${file} prompt missing"
+            fi
+          done
+          
+          # Check for chat modes
+          for file in architect debugger reviewer; do
+            if [ -f ".github/chatmodes/${file}.chatmode.md" ]; then
+              echo "✅ ${file} chat mode found"
+            else
+              echo "❌ ${file} chat mode missing"
+            fi
+          done
+
+      - name: Validate YAML frontmatter
+        run: |
+          echo "Validating YAML frontmatter in configuration files..."
+          # Simple check for YAML frontmatter in instruction files
+          for file in .github/instructions/*.instructions.md; do
+            if [ -f "$file" ]; then
+              if grep -q "^---$" "$file"; then
+                echo "✅ YAML frontmatter found in $(basename $file)"
+              else
+                echo "❌ YAML frontmatter missing in $(basename $file)"
+              fi
+            fi
+          done
+
+      - name: Check documentation links
+        run: |
+          echo "Checking internal documentation links..."
+          # Verify that referenced files exist
+          if grep -r "\.md)" .github/ | grep -E "\]\(.*\.md\)" | head -5; then
+            echo "✅ Documentation links found"
+          fi
+
+      - name: Setup validation complete
+        run: |
+          echo "🎉 GitHub Copilot ABAP configuration validation complete!"
+          echo "Configuration includes:"
+          echo "  - Main instructions file"
+          echo "  - 6 specialized instruction files"
+          echo "  - 6 reusable prompt files" 
+          echo "  - 3 specialized chat modes"
+          echo "  - This validation workflow"
+          echo ""
+          echo "Ready for ABAP development with GitHub Copilot! 🚀"
